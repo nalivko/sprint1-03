@@ -6,5 +6,5 @@ export const getAllBlogsController = async (req: Request, res: Response<BlogView
 
     const allBlogs = await blogsRepository.getAllBlogs()
     
-    res.send(allBlogs)
+    res.send(blogsRepository.mapAllBlogs(allBlogs))
 }

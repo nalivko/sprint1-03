@@ -6,5 +6,5 @@ export const getAllPostsController = async (req: Request, res: Response<PostView
 
     const allBlogs = await postsRepository.getAllPosts()
     
-    res.send(allBlogs)
+    res.send(postsRepository.mapAllPosts(allBlogs))
 }

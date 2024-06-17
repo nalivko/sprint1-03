@@ -7,7 +7,7 @@ export const findBlogController = async (req: Request<{id: string}>, res: Respon
     const blog = await blogsRepository.getBlogById(req.params.id)
 
     if (blog) {
-        res.send(blog)
+        res.send(blogsRepository.mapBlog(blog))
     } else {
         res.sendStatus(404)
     }

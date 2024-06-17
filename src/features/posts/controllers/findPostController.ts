@@ -7,7 +7,7 @@ export const findPostController = async (req: Request, res: Response<PostViewMod
     const post = await postsRepository.getPostById(req.params.id)
     
     if(post) {
-        res.send(post)
+        res.send(postsRepository.mapPost(post))
     } else {
         res.sendStatus(404)
     }

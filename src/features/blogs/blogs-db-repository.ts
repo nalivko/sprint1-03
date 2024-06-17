@@ -45,4 +45,27 @@ export const blogsRepository = {
         return result.deletedCount === 1
     },
 
+    mapBlog(blog: BlogViewModel) {
+        return {
+            id: blog.id,
+            name: blog.name,
+            description: blog.description,
+            websiteUrl: blog.websiteUrl,
+            createdAt: blog.createdAt,
+            isMembership: blog.isMembership
+        }
+    },
+
+    mapAllBlogs(blogs: BlogViewModel[]) {
+        return blogs.map(blog => {
+            return {
+                id: blog.id,
+                name: blog.name,
+                description: blog.description,
+                websiteUrl: blog.websiteUrl,
+                createdAt: blog.createdAt,
+                isMembership: blog.isMembership
+            }
+        })
+    }
 }
