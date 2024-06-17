@@ -6,5 +6,5 @@ export const createBlogController = async (req: Request<any, any, BlogInputModel
     
     const newBlog = await blogsRepository.createBlog(req.body)
 
-    res.status(201).send(newBlog)
+    res.status(201).send(blogsRepository.mapBlog(newBlog))
 }

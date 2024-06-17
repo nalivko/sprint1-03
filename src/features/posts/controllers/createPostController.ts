@@ -6,5 +6,5 @@ export const createPostController = async (req: Request, res: Response<PostViewM
     
     const newPost = await postsRepository.createPost(req.body)
 
-    res.status(201).send(newPost)
+    res.status(201).send(postsRepository.mapPost(newPost))
 }
