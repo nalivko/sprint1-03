@@ -14,10 +14,16 @@ export const contentValidator = body('content').isString().withMessage('content 
     .trim().isLength({ min: 1, max: 1000 }).withMessage('The content length must be between 1 and 1000 characters')
 
 export const blogIdValidator = body('blogId').isString().withMessage('not string')
-    .trim().custom(blogId => {
-        const blog = blogsRepository.getBlogById(blogId)
-        return !!blog
-    }).withMessage('must be a blog from blogs table')
+    .trim().custom(async blogId => {
+        const blog = await blogsRepository.getBlogById(blogId)
+        console.log('blog', blog);
+
+        if(!blog) {
+            throw new Error('must be a blog from blogs table')
+        }
+        
+        return true
+    })
 
 
 
