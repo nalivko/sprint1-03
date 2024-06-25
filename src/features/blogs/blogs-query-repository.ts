@@ -29,7 +29,7 @@ export const blogsQueryRepository = {
 
     getSearchFilter(searchNameTerm: string | null) {
         return searchNameTerm
-            ? { title: { $regex: searchNameTerm, $options: 'i' } }
+            ? { name: { $regex: searchNameTerm, $options: 'i' } }
             : {}
     }
 }
