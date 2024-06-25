@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb"
 import { BlogDbType } from "../../db/blog-db-type"
 import { db } from "../../db/db"
 import { BlogInputModel } from "../../input-output-types/blogs-types"
@@ -10,12 +11,12 @@ export const blogsRepository = {
     },
     
     getBlogById(id: string){
-        return db.blogs.find(blog => blog.id === id)
+        return db.blogs.find(blog => blog._id === new ObjectId(id))
     },
 
     createBlog(blog: BlogInputModel){
         const newBlog: BlogDbType = {
-            id: new Date().toISOString(),
+            // id: new Date().toISOString(),
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.websiteUrl,
@@ -24,7 +25,7 @@ export const blogsRepository = {
         }
 
         db.blogs.push(newBlog)
-        return newBlog.id
+        return newBlog._id
     },
 
     updateBlog(id: string, newData: BlogInputModel){
@@ -43,7 +44,7 @@ export const blogsRepository = {
 
     deleteBlog(id: string){
         for (let i = 0; i < db.blogs.length; i++) {
-            if (db.blogs[i].id === id) {
+            if (db.blogs[i]._id === new ObjectId(id)) {
                 db.blogs.splice(i, 1)
                 return true
             }

@@ -1,45 +1,34 @@
 import { PostDbType } from "../../db/post-db-type"
 import { PostInputModel, PostViewModel } from "../../input-output-types/posts-types"
-import { blogsRepository } from "../blogs/blogs-db-repository"
 import { postsCollection } from "../../db/mongodb"
+import { postsQueryParamsType } from "../../helpers/helper"
+import { ObjectId } from "mongodb"
 
 export const postsRepository = {
-    getAllPosts(): Promise<PostDbType[]> {
-        const allPosts = postsCollection.find({}).toArray()
 
-        return allPosts
+
+    async getPostById(id: string): Promise<PostViewModel | null> {
+
+        const post = await postsCollection.findOne({ _id: new ObjectId(id) })
+
+        return post ? this.mapPost(post) : null
     },
 
-    async getPostById(id: string): Promise<PostDbType | null> {
-        const post = await postsCollection.findOne({ id: id })
-
-        return post ? post : null
-    },
-
-    async createPost(post: PostInputModel): Promise<PostViewModel> {
-        const blog = await blogsRepository.getBlogById(post.blogId)
-        const newPost: PostDbType = {
-            id: new Date().toISOString(),
-            title: post.title,
-            shortDescription: post.shortDescription,
-            content: post.content,
-            blogId: post.blogId,
-            blogName: blog!.name,
-            createdAt: new Date().toISOString()
-        }
+    async createPost(newPost: PostDbType): Promise<PostViewModel> {
 
         await postsCollection.insertOne(newPost)
-        return newPost
+
+        return this.mapPost(newPost)
     },
 
     async updatePost(id: string, newData: PostInputModel): Promise<boolean> {
 
-        const result = await postsCollection.updateOne({ id: id }, {
+        const result = await postsCollection.updateOne({ _id: new ObjectId(id) }, {
             $set: {
                 title: newData.title,
                 shortDescription: newData.shortDescription,
                 content: newData.content,
-                blogId: newData.blogId
+                blogId: new ObjectId(newData.blogId)
             }
         })
 
@@ -47,34 +36,24 @@ export const postsRepository = {
     },
 
     async deletePost(id: string): Promise<boolean> {
-        const result = await postsCollection.deleteOne({ id: id })
+
+        const result = await postsCollection.deleteOne({ _id: new ObjectId(id) })
 
         return result.deletedCount === 1
     },
 
-    mapPost(post: PostViewModel) {
+    mapPost(post: PostDbType) {
         return {
-            id: post.id,
+            id: post._id!.toString(),
             title: post.title,
             shortDescription: post.shortDescription,
             content: post.content,
-            blogId: post.blogId,
+            blogId: post.blogId.toString(),
             blogName: post.blogName,
             createdAt: post.createdAt
         }
     },
 
-    mapAllPosts(blogs: PostViewModel[]) {
-        return blogs.map(post => {
-            return {
-                id: post.id,
-                title: post.title,
-                shortDescription: post.shortDescription,
-                content: post.content,
-                blogId: post.blogId,
-                blogName: post.blogName,
-                createdAt: post.createdAt
-            }
-        })
-    }
 }
+
+// reject(new Error('error in promise')) 6question

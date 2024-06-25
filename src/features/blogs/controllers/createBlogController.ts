@@ -1,10 +1,9 @@
 import { Request, Response } from "express"
-import { blogsRepository } from "../blogs-db-repository"
 import { BlogInputModel, BlogViewModel } from "../../../input-output-types/blogs-types"
+import { blogsService } from "../services/blogs-service"
 
 export const createBlogController = async (req: Request<any, any, BlogInputModel>, res: Response<BlogViewModel>) => {
-    
-    const newBlog = await blogsRepository.createBlog(req.body)
+    const newBlog = await blogsService.createBlog(req.body)
 
-    res.status(201).send(blogsRepository.mapBlog(newBlog))
+    res.status(201).send(newBlog)
 }

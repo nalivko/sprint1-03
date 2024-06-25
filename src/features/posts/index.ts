@@ -5,12 +5,13 @@ import { findPostController } from "./controllers/findPostController";
 import { updatePostController } from "./controllers/updatePostController";
 import { deletePostController } from "./controllers/deltePostController";
 import { postValidators } from "./middlewares/postValidators";
+import { queryValidator } from "../../global-middlewares/paginateValidator";
 import { authMiddleware } from "../../global-middlewares/authMiddleware";
 
 
 export const postsRouter = Router({})
 
-postsRouter.get('/', getAllPostsController)
+postsRouter.get('/', ...queryValidator, getAllPostsController)
 postsRouter.post('/', ...postValidators, createPostController)
 postsRouter.get('/:id', findPostController)
 postsRouter.put('/:id', ...postValidators, updatePostController)

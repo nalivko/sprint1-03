@@ -1,8 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { body, validationResult } from "express-validator";
-import { blogsRepository } from "../../blogs/blogs-db-repository";
+import { body } from "express-validator";
 import { authMiddleware } from "../../../global-middlewares/authMiddleware";
 import { checkErrorsMiddleware } from "../../../global-middlewares/checkErrorsMiddleware";
+import { blogsRepository } from "../../blogs/blogs-db-repository";
 
 export const titleValidator = body('title').isString().withMessage('title must be a string')
     .trim().isLength({ min: 1, max: 30 }).withMessage('The title length must be between 1 and 30 characters')
@@ -18,10 +17,10 @@ export const blogIdValidator = body('blogId').isString().withMessage('not string
         const blog = await blogsRepository.getBlogById(blogId)
         console.log('blog', blog);
 
-        if(!blog) {
+        if (!blog) {
             throw new Error('must be a blog from blogs table')
         }
-        
+
         return true
     })
 

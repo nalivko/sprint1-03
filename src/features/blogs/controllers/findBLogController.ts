@@ -1,13 +1,13 @@
 import { Request, Response } from "express"
 import { BlogViewModel } from "../../../input-output-types/blogs-types"
-import { blogsRepository } from "../blogs-db-repository"
+import { blogsService } from "../services/blogs-service"
 
-export const findBlogController = async (req: Request<{id: string}>, res: Response<BlogViewModel | null>) => {
-    
-    const blog = await blogsRepository.getBlogById(req.params.id)
+export const findBlogController = async (req: Request<{ id: string }>, res: Response<BlogViewModel | null>) => {
+
+    const blog = await blogsService.getBlogById(req.params.id)
 
     if (blog) {
-        res.send(blogsRepository.mapBlog(blog))
+        res.send(blog)
     } else {
         res.sendStatus(404)
     }

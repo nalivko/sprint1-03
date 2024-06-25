@@ -1,13 +1,12 @@
 import { Request, Response } from "express"
-import { postsRepository } from "../posts-db-repository"
 import { PostViewModel } from "../../../input-output-types/posts-types"
+import { postsService } from "../services/posts-service"
 
 export const findPostController = async (req: Request, res: Response<PostViewModel>) => {
-    
-    const post = await postsRepository.getPostById(req.params.id)
-    
-    if(post) {
-        res.send(postsRepository.mapPost(post))
+    const post = await postsService.getPostById(req.params.id)
+
+    if (post) {
+        res.send(post)
     } else {
         res.sendStatus(404)
     }
