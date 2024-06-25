@@ -16,12 +16,11 @@ export const blogsRepository = {
 
     createBlog(blog: BlogInputModel){
         const newBlog: BlogDbType = {
-            // id: new Date().toISOString(),
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.websiteUrl,
             createdAt: new Date().toISOString(),
-            isMembership: false
+            isMembership: true
         }
 
         db.blogs.push(newBlog)
