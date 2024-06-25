@@ -50,6 +50,10 @@ export const blogsService = {
     async createPostByBlogId(blogId: string, post: PostInputModel) {
         const blog = await this.getBlogById(blogId)
 
+        if(!blog) {
+            return 
+        }
+
         const newPost: PostDbType = {
             title: post.title,
             shortDescription: post.shortDescription,

@@ -1,4 +1,4 @@
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 import { authMiddleware } from "../../../global-middlewares/authMiddleware";
 import { checkErrorsMiddleware } from "../../../global-middlewares/checkErrorsMiddleware";
 import { blogsRepository } from "../../blogs/blogs-db-repository";
@@ -28,21 +28,6 @@ export const contentValidator =
 
 export const blogIdValidator =
     body('blogId')
-        .isString()
-        .withMessage('not string')
-        .trim()
-        .custom(async blogId => {
-            const blog = await blogsRepository.getBlogById(blogId)
-
-            if (!blog) {
-                throw new Error('must be a blog from blogs table')
-            }
-
-            return true
-        })
-
-export const blogIdQueryValidator =
-    param('blogId')
         .isString()
         .withMessage('not string')
         .trim()

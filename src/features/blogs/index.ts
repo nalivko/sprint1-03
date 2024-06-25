@@ -8,15 +8,16 @@ import { getPostsByBlogIdController } from "./controllers/getPostsByBlogIdContro
 import { createPostByBlogIdController } from "./controllers/createPostByBlogIdController";
 import { blogValidators } from "./middlewares/blogValidators";
 import { queryValidator } from "../../global-middlewares/paginateValidator";
-import { postValidators, blogIdQueryValidator } from "../posts/middlewares/postValidators";
+import { postValidators } from "../posts/middlewares/postValidators";
+import { blogIdQueryMiddleware } from "./middlewares/blogIdQueryMiddleware";
 import { authMiddleware } from "../../global-middlewares/authMiddleware";
 
 export const blogsRouter = Router({})
 
 blogsRouter.get('/', ...queryValidator, getBlogsController)
 blogsRouter.post('/', ...blogValidators, createBlogController)
-blogsRouter.get('/:blogId/posts', ...queryValidator, getPostsByBlogIdController)
-blogsRouter.post('/:blogId/posts', blogIdQueryValidator, ...postValidators, createPostByBlogIdController)
+blogsRouter.get('/:blogId/posts', blogIdQueryMiddleware, ...queryValidator, getPostsByBlogIdController)
+blogsRouter.post('/:blogId/posts', blogIdQueryMiddleware, ...postValidators, createPostByBlogIdController)
 blogsRouter.get('/:id', findBlogController)
 blogsRouter.put('/:id', ...blogValidators, updateBlogController)
 blogsRouter.delete('/:id', authMiddleware, deleteBlogController)
